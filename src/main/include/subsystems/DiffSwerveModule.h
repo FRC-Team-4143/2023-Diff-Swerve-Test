@@ -14,6 +14,7 @@
 #include "Constants.h"
 #include <frc/DataLogManager.h>
 #include <wpi/DataLog.h>
+#include <frc/kinematics/SwerveModulePosition.h>
 
 class DiffSwerveModule {
 	using radians_per_second_squared_t =
@@ -28,6 +29,8 @@ public:
 	DiffSwerveModule(int driveMotorChannel, int turningMotorChannel, int encoderChannel, std::string name, wpi::log::DataLog& log);
 
 	frc::SwerveModuleState GetState();
+
+	frc::SwerveModulePosition GetPosition();
 
 	double SetDesiredState(const frc::SwerveModuleState& state, double vtot);
 

@@ -143,6 +143,10 @@ double DiffSwerveModule::GetDriveMotorSpeed(double topSpeed, double bottomSpeed)
     return speed;
 }
 
+frc::SwerveModulePosition DiffSwerveModule::GetPosition(){
+    return {units::meter_t{m_driveEncoder.GetDistance()},  // fixme
+    units::radian_t{m_moduleAngle}};
+}
 // ============================================================================
 
 double DiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& referenceState, double vtot) {

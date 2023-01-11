@@ -1,6 +1,6 @@
 #pragma once
 #include <frc/Encoder.h>
-#include <frc/drive/MecanumDrive.h>
+//#include <frc/drive/MecanumDrive.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Rotation2d.h>
 #include <frc/interfaces/Gyro.h>
@@ -24,6 +24,7 @@
 #include <frc/kinematics/DifferentialDriveWheelSpeeds.h>
 #include <frc/DataLogManager.h>
 #include <wpi/DataLog.h>
+#include <frc/kinematics/SwerveModuleState.h>
 
 class DriveSubsystem : public frc2::SubsystemBase {
 public:
@@ -160,10 +161,10 @@ private:
 	// 4 defines the number of modules
 	frc::SwerveDriveOdometry<4> m_odometry;
 
-	frc::SwerveDrivePoseEstimator<4> m_poseEstimator{
-		frc::Rotation2d(), frc::Pose2d(), kDriveKinematics,
-		{0.1, 0.1, 0.1},   {0.05},        {0.1, 0.1, 0.1}
-	};
+	//frc::SwerveDrivePoseEstimator<4> m_poseEstimator{
+	//	frc::Rotation2d(), frc::Pose2d(), kDriveKinematics,
+	//	{0.1, 0.1, 0.1},   {0.05},        {0.1, 0.1, 0.1}
+	//};
 
 	bool m_fieldCentric;
 	frc::Field2d m_field;

@@ -24,7 +24,7 @@ DriveSubsystem::DriveSubsystem(frc::XboxController* controller, wpi::log::DataLo
 	m_rearLeft{kRearLeftDriveMotorPort, kRearLeftTurningMotorPort, kRearLeftPot, "rearLeft", CANIVORE, log},
 	m_frontRight{kFrontRightDriveMotorPort, kFrontRightTurningMotorPort, kFrontRightPot, "frontRight", "roborio", log},
 	m_rearRight{kRearRightDriveMotorPort, kRearRightTurningMotorPort, kRearRightPot, "rearRight", CANIVORE, log},
-	m_odometry{kDriveKinematics, GetHeading(), frc::Pose2d()},
+	m_odometry{kDriveKinematics, GetHeading(), {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_rearLeft.GetPosition(), m_rearRight.GetPosition()}, frc::Pose2d()},
 	m_fieldCentric{false},
 	m_controller(controller),
 	m_lastPose{m_odometry.GetPose()},
@@ -95,11 +95,8 @@ void DriveSubsystem::Periodic() {
 	m_currentYaw = m_pidgey.GetYaw() - m_zero;
 
 	m_odometry.Update(
-		GetHeading(),
-		frontLeftState,
-		frontRightState,
-		rearLeftState,
-		rearRightState
+		GetHeading(), {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_rearLeft.GetPosition(), m_rearRight.GetPosition()}
+		
 	);
 
 		m_realSenseYaw = _GetYawFromRealSense().value();
@@ -304,8 +301,7 @@ void DriveSubsystem::ResetOdometry(frc::Pose2d pose) {
 	m_currentYaw = pose.Rotation().Degrees().value();
 	SetOffsetHeading(m_currentYaw);
 
-	m_odometry.ResetPosition(pose, frc::Rotation2d(units::degree_t(GetHeading())));
-	m_poseEstimator.ResetPosition(pose, frc::Rotation2d(units::degree_t(GetHeading())));
+	m_odometry.ResetPosition(GetHeading(), {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_rearLeft.GetPosition(), m_rearRight.GetPosition()},pose);
 
 	m_resetRSx = m_xEntry.GetDouble(0);
 	m_resetRSz = m_zEntry.GetDouble(0);
