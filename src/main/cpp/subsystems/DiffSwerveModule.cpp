@@ -33,7 +33,7 @@ DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChanne
 	//m_turningMotor.ConfigStatorCurrentLimit(stator);
 
     m_turningPIDController.EnableContinuousInput(
-        units::radian_t{-units::constants::pi}, units::radian_t(units::constants::pi));
+        units::radian_t{-std::numbers::pi}, units::radian_t(std::numbers::pi));
     m_driveMotor.SetNeutralMode(NeutralMode::Coast);
     m_turningMotor.SetNeutralMode(NeutralMode::Coast);
 
@@ -81,7 +81,7 @@ DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChanne
 	//m_turningMotor.ConfigStatorCurrentLimit(stator);
 
     m_turningPIDController.EnableContinuousInput(
-        units::radian_t{-units::constants::pi}, units::radian_t(units::constants::pi));
+        units::radian_t{-std::numbers::pi}, units::radian_t(std::numbers::pi));
     m_driveMotor.SetNeutralMode(NeutralMode::Coast);
     m_turningMotor.SetNeutralMode(NeutralMode::Coast);
 
@@ -108,7 +108,7 @@ frc::SwerveModuleState DiffSwerveModule::GetState() {
     double bottomMotorSpeed = m_turningMotor.GetSelectedSensorVelocity();
 
     m_driveSpeed = GetDriveMotorSpeed(topMotorSpeed, bottomMotorSpeed);
-    m_moduleAngle = (m_encoder.GetAbsolutePosition() - m_offset) / 360 * 2 * units::constants::pi;
+    m_moduleAngle = (m_encoder.GetAbsolutePosition() - m_offset) / 360 * 2 * std::numbers::pi;
     
 
     //data logging
@@ -136,18 +136,12 @@ frc::SwerveModuleState DiffSwerveModule::GetState() {
 
 double DiffSwerveModule::GetDriveMotorSpeed(double topSpeed, double bottomSpeed) {
     double speed = ((topSpeed - bottomSpeed) / 2.0) 
-    * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * units::constants::pi * 1.10); //1.1 worn wheels 3/24/22
+    * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * std::numbers::pi * 1.10); //1.1 worn wheels 3/24/22
 
     frc::SmartDashboard::PutNumber(m_name + " Wheel Speed ", speed);
     
     return speed;
 }
-
-frc::SwerveModulePosition DiffSwerveModule::GetPosition(){
-    return {units::meter_t{m_driveEncoder.GetDistance()},  // fixme
-    units::radian_t{m_moduleAngle}};
-}
-// ============================================================================
 
 double DiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& referenceState, double vtot) {
 

@@ -24,10 +24,8 @@ DriveSubsystem::DriveSubsystem(frc::XboxController* controller, wpi::log::DataLo
 	m_rearLeft{kRearLeftDriveMotorPort, kRearLeftTurningMotorPort, kRearLeftPot, "rearLeft", CANIVORE, log},
 	m_frontRight{kFrontRightDriveMotorPort, kFrontRightTurningMotorPort, kFrontRightPot, "frontRight", "roborio", log},
 	m_rearRight{kRearRightDriveMotorPort, kRearRightTurningMotorPort, kRearRightPot, "rearRight", CANIVORE, log},
-	m_odometry{kDriveKinematics, GetHeading(), {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_rearLeft.GetPosition(), m_rearRight.GetPosition()}, frc::Pose2d()},
 	m_fieldCentric{false},
 	m_controller(controller),
-	m_lastPose{m_odometry.GetPose()},
 	m_log(log)
 {
 	LoadWheelOffsets();
@@ -85,7 +83,7 @@ void DriveSubsystem::Periodic() {
 
 	m_offset = atan2(-vy.value()*airTime, totDist) * 1.;   //radians    // test constant
 
-	m_offset *= 180./units::constants::pi;  // degrees
+	m_offset *= 180./std::numbers::pi;  // degrees
 
 	m_offset = std::clamp(m_offset, -25., 25.);
 
@@ -94,12 +92,7 @@ void DriveSubsystem::Periodic() {
 
 	m_currentYaw = m_pidgey.GetYaw() - m_zero;
 
-	m_odometry.Update(
-		GetHeading(), {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_rearLeft.GetPosition(), m_rearRight.GetPosition()}
-		
-	);
-
-		m_realSenseYaw = _GetYawFromRealSense().value();
+	m_realSenseYaw = _GetYawFromRealSense().value();
 
 /*
 	m_poseEstimator.Update(
@@ -118,7 +111,7 @@ void DriveSubsystem::Periodic() {
 	auto yVel = ds.Y().value()/.02;
 	auto rVel = ds.Rotation().Radians().value()/.02;
 
-	auto lxVel = xVel * sin(heading) + yVel * cos(units::constants::pi - heading);
+	auto lxVel = xVel * sin(heading) + yVel * cos(std::numbers::pi - heading);
 	auto lyVel = xVel * cos(heading) + yVel * sin(90 - heading);
 
 	//m per s
@@ -158,7 +151,6 @@ void DriveSubsystem::Periodic() {
 	frc::SmartDashboard::PutNumber("airTime", airTime);
 
 
-	m_field.SetRobotPose(m_odometry.GetPose());
 
 	//Wheel Offset Code;
 	if (frc::RobotController::GetUserButton() == 1 && m_counter == 0) {
@@ -290,30 +282,6 @@ double DriveSubsystem::GetTurnRate() {
 
 // ==========================================================================
 
-frc::Pose2d DriveSubsystem::GetPose() {
-	return m_odometry.GetPose();
-}
-
-// ==========================================================================
-
-void DriveSubsystem::ResetOdometry(frc::Pose2d pose) {
-
-	m_currentYaw = pose.Rotation().Degrees().value();
-	SetOffsetHeading(m_currentYaw);
-
-	m_odometry.ResetPosition(GetHeading(), {m_frontLeft.GetPosition(), m_frontRight.GetPosition(), m_rearLeft.GetPosition(), m_rearRight.GetPosition()},pose);
-
-	m_resetRSx = m_xEntry.GetDouble(0);
-	m_resetRSz = m_zEntry.GetDouble(0);
-	m_resetRSrw = m_rwEntry.GetDouble(0);
-	m_resetRSrx = m_rxEntry.GetDouble(0);
-	m_resetRSry = m_ryEntry.GetDouble(0);
-	m_resetRSrz = m_rzEntry.GetDouble(0);
-
-}
-
-// ==========================================================================
-
 void DriveSubsystem::MotorsOff() {
 	m_frontLeft.motorsOff();
 	m_rearLeft.motorsOff();
@@ -438,7 +406,7 @@ units::degree_t DriveSubsystem::_GetYawFromRealSense() {
 
 	// Convert quaternion to angle in degrees.
 	auto yawRadians{atan2(2.0 * (qx*qy + qw*qz), qw*qw + qx*qx - qy*qy - qz*qz)};
-	auto yawDegrees{yawRadians * 180.0 / units::constants::pi};
+	auto yawDegrees{yawRadians * 180.0 / std::numbers::pi};
 
 	return units::degree_t{yawDegrees};
 }

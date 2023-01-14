@@ -24,10 +24,5 @@ public:
 	void TestPeriodic() override;
 
 private:
-
-	// Have it null by default so that if testing teleop it
-	// doesn't have undefined behavior and potentially crash.
-	std::unique_ptr <frc2::Command> m_autonomousCommand = nullptr;
-
 	RobotContainer m_container;
 };

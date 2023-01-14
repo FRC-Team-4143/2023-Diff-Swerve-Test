@@ -32,7 +32,7 @@ PinnedDiffSwerveModule::PinnedDiffSwerveModule(int driveMotorChannel, int turnin
 	//m_turningMotor.ConfigStatorCurrentLimit(stator);
 
     m_turningPIDController.EnableContinuousInput(
-        units::radian_t{-units::constants::pi}, units::radian_t(units::constants::pi));
+        units::radian_t{-std::numbers::pi}, units::radian_t(std::numbers::pi));
     m_driveMotor.SetNeutralMode(NeutralMode::Coast);
     m_turningMotor.SetNeutralMode(NeutralMode::Coast);
 }
@@ -67,7 +67,7 @@ PinnedDiffSwerveModule::PinnedDiffSwerveModule(int driveMotorChannel, int turnin
 	//m_turningMotor.ConfigStatorCurrentLimit(stator);
 
     m_turningPIDController.EnableContinuousInput(
-        units::radian_t{-units::constants::pi}, units::radian_t(units::constants::pi));
+        units::radian_t{-std::numbers::pi}, units::radian_t(std::numbers::pi));
     m_driveMotor.SetNeutralMode(NeutralMode::Coast);
     m_turningMotor.SetNeutralMode(NeutralMode::Coast);
 }
@@ -89,7 +89,7 @@ frc::SwerveModuleState PinnedDiffSwerveModule::GetState() {
 
 double PinnedDiffSwerveModule::GetDriveMotorSpeed() {
     double speed = ((m_driveMotor.GetSelectedSensorVelocity() - m_turningMotor.GetSelectedSensorVelocity()) / 2.0) 
-    * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * units::constants::pi * 1.10); //1.1 worn wheels 3/24/22
+    * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * std::numbers::pi * 1.10); //1.1 worn wheels 3/24/22
 
     frc::SmartDashboard::PutNumber(m_name + " Wheel Speed ", speed);
     
@@ -134,9 +134,9 @@ double PinnedDiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& ref
     */
 
     // Set the motor outputs
-    if(!(fabs(state.angle.Radians().value()) < units::constants::pi/4) &&
-       !(fabs(state.angle.Radians().value()+(units::constants::pi*2)) < units::constants::pi/4) &&
-       !(fabs(state.angle.Radians().value()-(units::constants::pi*2)) < units::constants::pi/4)){
+    if(!(fabs(state.angle.Radians().value()) < std::numbers::pi/4) &&
+       !(fabs(state.angle.Radians().value()+(std::numbers::pi*2)) < std::numbers::pi/4) &&
+       !(fabs(state.angle.Radians().value()-(std::numbers::pi*2)) < std::numbers::pi/4)){
         m_driveVoltage = 0;
         m_turnVoltage = 0;
     } else {

@@ -30,8 +30,6 @@ public:
 
 	frc::SwerveModuleState GetState();
 
-	frc::SwerveModulePosition GetPosition();
-
 	double SetDesiredState(const frc::SwerveModuleState& state, double vtot);
 
 	void ResetEncoders();
@@ -66,17 +64,17 @@ private:
 	// meters per second squared.
 	/*
 	static constexpr units::radians_per_second_t kModuleMaxAngularVelocity =
-	units::radians_per_second_t(units::constants::pi * 100.0);  // radians per second
+	units::radians_per_second_t(std::numbers::pi * 100.0);  // radians per second
 	static constexpr units::unit_t<radians_per_second_squared_t> kModuleMaxAngularAcceleration =
 	units::unit_t<radians_per_second_squared_t>{
-	units::constants::pi * 2.0 * 100.0
+	std::numbers::pi * 2.0 * 100.0
 	*/
 	static constexpr units::radians_per_second_t kModuleMaxAngularVelocity =
-		units::radians_per_second_t(units::constants::pi * 100.0);  // radians per second
+		units::radians_per_second_t(std::numbers::pi * 100.0);  // radians per second
 
 	static constexpr units::unit_t<radians_per_second_squared_t> kModuleMaxAngularAcceleration =
 		units::unit_t<radians_per_second_squared_t>{
-			units::constants::pi * 2.0 * 100.0
+			std::numbers::pi * 2.0 * 100.0
 		}; // radians per second squared
 
 	WPI_TalonFX m_driveMotor;

@@ -133,7 +133,7 @@ class PPSwerveControllerCommand
       frc::ProfiledPIDController<units::radians> thetaController,
       std::function<void(std::array<frc::SwerveModuleState, NumModules>)>
           output,
-      wpi::span<frc2::Subsystem* const> requirements = {});
+      std::span<frc2::Subsystem* const> requirements = {});
 
   void Initialize() override;
 

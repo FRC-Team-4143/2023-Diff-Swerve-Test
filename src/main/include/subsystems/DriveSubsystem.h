@@ -89,20 +89,6 @@ public:
 	 */
 	double GetTurnRate();
 
-	/**
-	 * Returns the currently-estimated pose of the robot.
-	 *
-	 * @return The pose.
-	 */
-	frc::Pose2d GetPose();
-
-	/**
-	 * Resets the odometry to the specified pose.
-	 *
-	 * @param pose The pose to which to set the odometry.
-	 */
-	void ResetOdometry(frc::Pose2d pose);
-
 	// 2020 robot
 	//units::meter_t kTrackWidth = 0.52_m; // Distance between centers of right and left wheels on robot
 	//units::meter_t kWheelBase = 0.78_m; // Distance between centers of front and back wheels on robot
@@ -156,10 +142,6 @@ private:
 	double m_currentYaw = 0;
 
 	int m_counter = 0;
-
-	// Odometry class for tracking robot pose
-	// 4 defines the number of modules
-	frc::SwerveDriveOdometry<4> m_odometry;
 
 	//frc::SwerveDrivePoseEstimator<4> m_poseEstimator{
 	//	frc::Rotation2d(), frc::Pose2d(), kDriveKinematics,

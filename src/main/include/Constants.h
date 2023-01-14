@@ -62,7 +62,7 @@ namespace DriveConstants {
 	constexpr double stickDeadBand = .1;
 
 	constexpr auto kMaxSpeed = units::meters_per_second_t(4);
-	constexpr auto kMaxAngularSpeed = units::radians_per_second_t(2 * units::constants::pi); 
+	constexpr auto kMaxAngularSpeed = units::radians_per_second_t(2 * std::numbers::pi); 
 } // namespace DriveConstants
 
 // ==========================================================================
@@ -72,15 +72,15 @@ namespace ModuleConstants {
 	//constexpr double kWheelDiameterMeters = 0.1143 * 0.93; //0.1143 was working with worn wheels 
 	//constexpr double kDriveEncoderDistancePerPulse =
 	// Assumes the encoders are directly mounted on the wheel shafts
-	//(kWheelDiameterMeters * units::constants::pi) /
+	//(kWheelDiameterMeters * std::numbers::pi) /
 	//static_cast<double>(kEncoderCPR);
 
 	//stexpr double kTurningEncoderDistancePerPulse =
 	// Assumes the encoders are directly mounted on the wheel shafts
-	//(units::constants::pi * 2) / static_cast<double>(kEncoderCPR);
+	//(std::numbers::pi * 2) / static_cast<double>(kEncoderCPR);
 
-	constexpr double kPModuleTurningController = 1. / units::constants::pi;
-	constexpr double kPSwerveModuleTurningController = 2. / units::constants::pi;
+	constexpr double kPModuleTurningController = 1. / std::numbers::pi;
+	constexpr double kPSwerveModuleTurningController = 2. / std::numbers::pi;
 	constexpr double kPModuleDriveController = .5; //0.025;
 	constexpr double kmaxTurnOutput = .5;
 
@@ -104,8 +104,8 @@ namespace AutoConstants {
 
 	constexpr auto kMaxSpeed = units::meters_per_second_t(3);
 	constexpr auto kMaxAcceleration = units::meters_per_second_squared_t(3);
-	constexpr auto kMaxAngularSpeed = units::radians_per_second_t(2 * units::constants::pi); 
-	constexpr auto kMaxAngularAcceleration = units::unit_t<radians_per_second_squared_t>(units::constants::pi);
+	constexpr auto kMaxAngularSpeed = units::radians_per_second_t(2 * std::numbers::pi); 
+	constexpr auto kMaxAngularAcceleration = units::unit_t<radians_per_second_squared_t>(std::numbers::pi);
 
 	constexpr double kPXController = 1.;  //0.5
 	constexpr double kPYController = 1.;  //0.5

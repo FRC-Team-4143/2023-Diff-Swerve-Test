@@ -32,7 +32,7 @@ SwerveModule::SwerveModule(int turningMotorChannel, int driveMotorChannel, int e
 	//m_turningMotor.ConfigStatorCurrentLimit(stator);
 
     m_turningPIDController.EnableContinuousInput(
-        units::radian_t{-units::constants::pi}, units::radian_t(units::constants::pi));
+        units::radian_t{-std::numbers::pi}, units::radian_t(std::numbers::pi));
     m_driveMotor.SetNeutralMode(NeutralMode::Coast);
     m_turningMotor.SetNeutralMode(NeutralMode::Brake);
 }
@@ -67,7 +67,7 @@ SwerveModule::SwerveModule(int turningMotorChannel, int driveMotorChannel, int e
 	//m_turningMotor.ConfigStatorCurrentLimit(stator);
 
     m_turningPIDController.EnableContinuousInput(
-        units::radian_t{-units::constants::pi}, units::radian_t(units::constants::pi));
+        units::radian_t{-std::numbers::pi}, units::radian_t(std::numbers::pi));
     m_driveMotor.SetNeutralMode(NeutralMode::Coast);
     m_turningMotor.SetNeutralMode(NeutralMode::Brake);
 }
@@ -78,7 +78,7 @@ SwerveModule::SwerveModule(int turningMotorChannel, int driveMotorChannel, int e
 
 frc::SwerveModuleState SwerveModule::GetState() {
     m_driveSpeed = GetDriveMotorSpeed();
-    m_moduleAngle = (m_encoder.GetAbsolutePosition() - m_offset) / 360 * 2 * units::constants::pi;
+    m_moduleAngle = (m_encoder.GetAbsolutePosition() - m_offset) / 360 * 2 * std::numbers::pi;
     return {units::meters_per_second_t{m_driveSpeed},
         //frc::Rotation2d(units::radian_t(m_turningEncoder.Get()))};
         frc::Rotation2d(units::radian_t(m_moduleAngle))
@@ -89,7 +89,7 @@ frc::SwerveModuleState SwerveModule::GetState() {
 
 double SwerveModule::GetDriveMotorSpeed() {
     double speed = -(m_driveMotor.GetSelectedSensorVelocity()) 
-    * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * units::constants::pi * 1.07);
+    * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * std::numbers::pi * 1.07);
 
     //frc::SmartDashboard::PutNumber(m_name + " Wheel Speed ", speed);
     

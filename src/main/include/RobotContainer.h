@@ -9,8 +9,6 @@
 #include <frc2/command/Command.h>
 #include <frc2/command/PIDCommand.h>
 #include <frc2/command/RunCommand.h>
-#include "Scripting/PathManager.h"
-#include "Scripting/ValidateScriptCmd.h"
 #include "subsystems/ClimberSubsystem.h"
 #include "subsystems/DriveSubsystem.h"
 #include "subsystems/PickUpSubsystem.h"
@@ -21,6 +19,8 @@
 #include <frc/DataLogManager.h>
 #include <wpi/DataLog.h>
 #include <frc/PowerDistribution.h>
+#include "commands/PickUpCycle.h"
+#include "commands/PickUpCycleBounce.h"
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -36,9 +36,6 @@ public:
 	RobotContainer();
 
 	void LogData();
-
-	//frc2::Command* GetAutonomousCommandOld();
-	std::unique_ptr<frc2::Command> GetAutonomousCommand();
 
 	wpi::log::DataLog& m_log;
 
@@ -66,21 +63,13 @@ private:
 	frc2::JoystickButton *m_rb;
 	frc2::JoystickButton *m_lb;
 
-	frc::Trajectory m_testTrajectory;
-	pathplanner::PathPlannerTrajectory m_ppTrajectory;
-
-	PathManager m_pathManager;
-
-	frc4143::ValidateScriptCmd m_validateScriptCmd;
-
-	std::unique_ptr<frc2::Command> _GetDrivePathCommand();
-
 	void _ConfigureButtonBindings();
-	void _ConfigureDashboardControls();
-	void _InitializeScriptEngine();
 
 	//bool IsNearWaypoint(Pose2d waypoint, double within);
 
 	wpi::log::DoubleLogEntry m_totalCurrent;
 	wpi::log::DoubleLogEntry m_batteryVoltage;
+
+	PickUpCycle* m_pickUpCycleCommand;
+	PickUpCycleBounce* m_pickUpCycleBounceCommand;
 };
