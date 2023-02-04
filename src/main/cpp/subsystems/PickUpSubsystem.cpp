@@ -75,19 +75,19 @@ void PickUpSubsystem::PickUpBounce() {
 
 void PickUpSubsystem::PickUpRetract() {
 	m_upperSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
-	m_lowerSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+	//m_lowerSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
 }
 
 // ============================================================================
 
 void PickUpSubsystem::PickUpExtend() {
 	m_upperSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
-	m_lowerSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
+	//m_lowerSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
 }
 
 void PickUpSubsystem::PickUpExtendStart() {
 	m_upperSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
-	m_lowerSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
+	//m_lowerSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
 }
 
 // ============================================================================

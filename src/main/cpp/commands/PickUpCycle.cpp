@@ -5,10 +5,10 @@ PickUpCycle::PickUpCycle(PickUpSubsystem* subsystem,frc::XboxController* control
 }
 
 void PickUpCycle::Initialize() {
-	m_pickUp->RollerIn();
+	//m_pickUp->RollerIn();
 	m_pickUp->PickUpExtend();
 	//m_pickUp->PickUpBounce(); // this line does the scoop pickup motion
-	m_pickUp->IndexerLoad();
+	//m_pickUp->IndexerLoad();
 	counter = 0;
 	counter2 = 0;
 }
@@ -26,8 +26,8 @@ void PickUpCycle::Execute() {
 
 void PickUpCycle::End(bool) {
 	m_pickUp->PickUpRetract();
-	m_pickUp->RollerOff();
-	m_pickUp->IndexerOff();
+	//m_pickUp->RollerOff();
+	//m_pickUp->IndexerOff();
 }
 
 bool PickUpCycle::IsFinished() {

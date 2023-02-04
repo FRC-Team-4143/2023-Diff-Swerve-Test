@@ -1,20 +1,20 @@
-#include "subsystems/DiffSwerveModule.h"
+#include "subsystems/AnalogDiffSwerveModule.h"
 #include <frc/smartdashboard/SmartDashboard.h>
 
 // ============================================================================
 
-DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChannel, int encoderChannel, std::string name, std::string CANbus, wpi::log::DataLog& log)
+AnalogDiffSwerveModule::AnalogDiffSwerveModule(int driveMotorChannel, int turningMotorChannel, int encoderChannel, std::string name, std::string CANbus, wpi::log::DataLog& log)
 :   m_driveMotor(driveMotorChannel, CANbus),
     m_turningMotor(turningMotorChannel, CANbus),
-    m_encoder(encoderChannel, CANbus),
+    m_encoder(encoderChannel),
     m_name(name),
     m_log(log)
 {          
     //Reset motors and encoders
     m_driveMotor.ConfigFactoryDefault();
 	m_turningMotor.ConfigFactoryDefault();
-    m_encoder.ConfigFactoryDefault();
-    m_encoder.ConfigAbsoluteSensorRange(AbsoluteSensorRange::Signed_PlusMinus180,20);
+    //m_encoder.ConfigFactoryDefault();
+    //m_encoder.ConfigAbsoluteSensorRange(AbsoluteSensorRange::Signed_PlusMinus180,20);
 	//m_encoder.SetStatusFramePeriod(CANCoderStatusFrame_SensorData, 5, 20);
 
     m_driveMotor.ConfigVoltageCompSaturation(DriveConstants::driveMaxVoltage); 
@@ -50,7 +50,7 @@ DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChanne
 
 }
 
-DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChannel, int encoderChannel, std::string name, wpi::log::DataLog& log)
+AnalogDiffSwerveModule::AnalogDiffSwerveModule(int driveMotorChannel, int turningMotorChannel, int encoderChannel, std::string name, wpi::log::DataLog& log)
 :   m_driveMotor(driveMotorChannel),
     m_turningMotor(turningMotorChannel),
     m_encoder(encoderChannel),
@@ -60,8 +60,8 @@ DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChanne
     //Reset motors and encoders
     m_driveMotor.ConfigFactoryDefault();
 	m_turningMotor.ConfigFactoryDefault();
-    m_encoder.ConfigFactoryDefault();
-    m_encoder.ConfigAbsoluteSensorRange(AbsoluteSensorRange::Signed_PlusMinus180,20);
+    //m_encoder.ConfigFactoryDefault();
+    //m_encoder.ConfigAbsoluteSensorRange(AbsoluteSensorRange::Signed_PlusMinus180,20);
 	//m_encoder.SetStatusFramePeriod(CANCoderStatusFrame_SensorData, 5, 20);
 
     m_driveMotor.ConfigVoltageCompSaturation(DriveConstants::driveMaxVoltage); 
@@ -102,7 +102,7 @@ DiffSwerveModule::DiffSwerveModule(int driveMotorChannel, int turningMotorChanne
 
 //called from DriveSubsystem Periodic
 
-frc::SwerveModuleState DiffSwerveModule::GetState() {
+frc::SwerveModuleState AnalogDiffSwerveModule::GetState() {
 
     double topMotorSpeed = m_driveMotor.GetSelectedSensorVelocity();
     double bottomMotorSpeed = m_turningMotor.GetSelectedSensorVelocity();
@@ -134,7 +134,7 @@ frc::SwerveModuleState DiffSwerveModule::GetState() {
 
 // ============================================================================
 
-double DiffSwerveModule::GetDriveMotorSpeed(double topSpeed, double bottomSpeed) {
+double AnalogDiffSwerveModule::GetDriveMotorSpeed(double topSpeed, double bottomSpeed) {
     double speed = ((topSpeed - bottomSpeed) / 2.0) 
     * (10.0 / 2048) /*Revs per second*/ * ((10  / 88.0) * (54 / 14.0) * (1 / 3.0)) /*Gear Ratios*/ * (4 * 0.0254 * std::numbers::pi * 1.10); //1.1 worn wheels 3/24/22
 
@@ -143,7 +143,7 @@ double DiffSwerveModule::GetDriveMotorSpeed(double topSpeed, double bottomSpeed)
     return speed;
 }
 
-double DiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& referenceState, double vtot) {
+double AnalogDiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& referenceState, double vtot) {
 
     // Optimize the reference state to avoid spinning further than 90 degrees
     auto state = referenceState;
@@ -154,7 +154,7 @@ double DiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& reference
     }
 
     // Calculate the drive output from the drive PID controller.
-    const auto driveOutput{m_drivePIDController.Calculate(m_driveSpeed, state.spee`d.value())};
+    const auto driveOutput{m_drivePIDController.Calculate(m_driveSpeed, state.speed.value())};
     m_expectedSpeed.Append(state.speed.value());
 
     // Calculate the turning motor output from the turning PID controller.
@@ -184,7 +184,7 @@ double DiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& reference
     return std::max(m_driveVoltage,m_turnVoltage);
 }
 
-void DiffSwerveModule::SetVoltage(double driveMax){
+void AnalogDiffSwerveModule::SetVoltage(double driveMax){
     m_driveMotor.Set(ControlMode::PercentOutput, m_driveVoltage*driveMax/DriveConstants::driveMaxVoltage);
     m_turningMotor.Set(ControlMode::PercentOutput, m_turnVoltage*driveMax/DriveConstants::driveMaxVoltage);
     //m_driveMotor.SetVoltage(units::voltage::volt_t{m_driveVoltage*driveMax});
@@ -193,17 +193,17 @@ void DiffSwerveModule::SetVoltage(double driveMax){
 
 // ============================================================================
 
-void DiffSwerveModule::ResetEncoders() {
+void AnalogDiffSwerveModule::ResetEncoders() {
 }
 
-void DiffSwerveModule::motorsOff () {
+void AnalogDiffSwerveModule::motorsOff () {
     m_driveMotor.Set(ControlMode::PercentOutput, 0);
     m_turningMotor.Set(ControlMode::PercentOutput, 0);
 }
 
 // =========================Wheel Offsets======================================
 
-void DiffSwerveModule::SetWheelOffset() {
+void AnalogDiffSwerveModule::SetWheelOffset() {
 	auto steerPosition{m_encoder.GetAbsolutePosition()};
     fmt::print("ERROR: {} steerPosition {}\n", m_name, steerPosition);
 	frc::Preferences::SetDouble(m_name, steerPosition);
@@ -212,7 +212,7 @@ void DiffSwerveModule::SetWheelOffset() {
 
 // ============================================================================
 
-void DiffSwerveModule::LoadWheelOffset() {
+void AnalogDiffSwerveModule::LoadWheelOffset() {
 	auto steerPosition{frc::Preferences::GetDouble(m_name)};
     fmt::print("ERROR: {} steerPosition {}\n", m_name, steerPosition);
     m_offset = steerPosition;
