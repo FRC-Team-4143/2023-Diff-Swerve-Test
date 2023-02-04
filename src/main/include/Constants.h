@@ -40,8 +40,8 @@ namespace DriveConstants {
 
 	constexpr int kFrontLeftPot = 0;
 	constexpr int kFrontRightPot = 1;
-	constexpr int kRearLeftPot = 3;
-	constexpr int kRearRightPot = 2;
+	constexpr int kRearLeftPot = 2;
+	constexpr int kRearRightPot = 3;
 
 	//constexpr double driveMaxVoltage = 12;
 	constexpr double driveMaxVoltage = 10;

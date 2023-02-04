@@ -154,7 +154,7 @@ double DiffSwerveModule::SetDesiredState(const frc::SwerveModuleState& reference
     }
 
     // Calculate the drive output from the drive PID controller.
-    const auto driveOutput{m_drivePIDController.Calculate(m_driveSpeed, state.spee`d.value())};
+    const auto driveOutput{m_drivePIDController.Calculate(m_driveSpeed, state.speed.value())};
     m_expectedSpeed.Append(state.speed.value());
 
     // Calculate the turning motor output from the turning PID controller.

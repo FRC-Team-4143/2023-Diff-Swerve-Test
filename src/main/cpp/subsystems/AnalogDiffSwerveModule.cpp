@@ -108,7 +108,7 @@ frc::SwerveModuleState AnalogDiffSwerveModule::GetState() {
     double bottomMotorSpeed = m_turningMotor.GetSelectedSensorVelocity();
 
     m_driveSpeed = GetDriveMotorSpeed(topMotorSpeed, bottomMotorSpeed);
-    m_moduleAngle = (m_encoder.GetAbsolutePosition() - m_offset) / 360 * 2 * std::numbers::pi;
+    m_moduleAngle = (m_encoder.GetAbsolutePosition() - m_offset) * 2 * std::numbers::pi;
     
 
     //data logging
